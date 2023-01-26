@@ -16,15 +16,15 @@ jobs:
           fetch-depth: 0 
    
       - name: Get changed files in the docs folder
-          id: changed-files-specific
-          uses: tj-actions/changed-files@v35
-          with:
-            files: app/lib/experiments/*.ts
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v35
+        with:
+          files: app/lib/experiments/*.ts
   
       - name: Check XPs
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        - uses: actions/setup-node@v3
-            with:
-            node-version: 18
-            run: npm install ts-node
-            run: script/check-xps.ts
+        uses: actions/setup-node@v3
+          with:
+          node-version: 18
+        run: npm install ts-node
+        run: script/check-xps.ts ${{ steps.changed-files-excluded.outputs.all_changed_files }}

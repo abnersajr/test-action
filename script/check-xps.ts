@@ -1,1 +1,1 @@
-console.log("tests");
+console.log(process.argv);
