@@ -10,7 +10,18 @@ on:
 jobs:
   get_files:
     run-on: ubuntu-latest
+    outputs:
+      files: ${{ steps.get_files.outputs.files }}
+    steps:
+      - id: files
+      - uses: actions/checkout@v3
+        run: |
+          git diff --name-only main... | grep -E 'app/lib/experiments/.*.ts$' >> $GITHUB_OUTPUT
+  
+  xp_checker:
+    run-on: ubuntu-latest
+    needs: get_files
     steps:
       - uses: actions/checkout@v3
-      - run:
-          echo "Files changed: ${{ github.event.pull_request.changed_files }}"
+      - run: |
+          echo ${{ needs.get_files.outputs.files }}
