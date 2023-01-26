@@ -24,6 +24,7 @@ jobs:
       - name: Check XPs
         id: check-xpsid
         if: steps.changed-files-specific.outputs.any_changed == 'true'
+        uses: actions/checkout@v3
         uses: actions/setup-node@v3
           with:
             node-version: 18
