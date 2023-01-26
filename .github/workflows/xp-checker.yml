@@ -1,0 +1,16 @@
+name: "Check XPs"
+
+on:
+  pull_request:
+    paths:
+     - 'app/lib/experiments/**.ts'
+    branches:
+    - master
+
+jobs:
+  get_files:
+    run-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run:
+          echo "Files changed: ${{ github.event.pull_request.changed_files }}"
