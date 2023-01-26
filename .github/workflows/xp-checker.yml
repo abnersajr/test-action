@@ -27,6 +27,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm install ts-node
-      - run: ts-node script/check-xps.ts ${{ steps.changed-files-specific.outputs.all_changed_files }}
+      - run: npm install typescript ts-node
+      - run: npx ts-node script/check-xps.ts ${{ steps.changed-files-specific.outputs.all_changed_files }}
         
