@@ -5,7 +5,7 @@ on:
     paths:
      - app/lib/experiments/*.ts
     branches:
-    - master
+    - main
 
 jobs:
   get_files:
