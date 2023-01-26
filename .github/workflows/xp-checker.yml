@@ -10,18 +10,21 @@ on:
 jobs:
   get_files:
     run-on: ubuntu-latest
-    outputs:
-      files: ${{ steps.get_files.outputs.files }}
     steps:
-      - id: files
       - uses: actions/checkout@v3
-        run: |
-          git diff --name-only main... | grep -E 'app/lib/experiments/.*.ts$' >> $GITHUB_OUTPUT
+        with:
+          fetch-depth: 0 
+   
+      - name: Get changed files in the docs folder
+          id: changed-files-specific
+          uses: tj-actions/changed-files@v35
+          with:
+            files: app/lib/experiments/*.ts
   
-  xp_checker:
-    run-on: ubuntu-latest
-    needs: get_files
-    steps:
-      - uses: actions/checkout@v3
-      - run: |
-          echo ${{ needs.get_files.outputs.files }}
+      - name: Check XPs
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        - uses: actions/setup-node@v3
+            with:
+            node-version: 18
+            run: npm install ts-node
+            run: script/check-xps.ts
