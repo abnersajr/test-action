@@ -3,7 +3,7 @@ name: "Check XPs"
 on:
   pull_request:
     paths:
-     - 'app/lib/experiments/**.ts'
+     - app/lib/experiments/*.ts
     branches:
     - master
 
