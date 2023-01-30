@@ -23,7 +23,7 @@ jobs:
         id: changed-files-specific
         uses: tj-actions/changed-files@v35
         with:
-          base_sha: ${{ github.event.pull_request.base.sha }}
+          since_last_remote_commit: true
           files: app/lib/experiments/*.ts
   
       - name: Check XPs
