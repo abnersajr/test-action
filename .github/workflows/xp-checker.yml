@@ -29,7 +29,6 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: xps
         run: |
-          echo "$steps.changed-files-specific.outputs"
           npm install typescript ts-node @actions/core
           npx ts-node script/check-xps.ts ${{ steps.changed-files-specific.outputs.all_changed_files }}
         
