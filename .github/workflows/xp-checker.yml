@@ -28,7 +28,6 @@ jobs:
   
   update_pr:
     needs: get_files
-    if: steps.changed-files-specific.outputs.any_changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v3
@@ -40,13 +39,15 @@ jobs:
           fetch-depth: 0 
 
       - name: Check XPs
-        id: xps
+        id: xps        
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
           npm install typescript ts-node @actions/core
           npx ts-node script/check-xps.ts ${{ steps.changed-files-specific.outputs.all_changed_files }}
         
       - name: Find Comment
         uses: peter-evans/find-comment@v2
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: fc
         with:
           issue-number: ${{ github.event.pull_request.number }}
@@ -64,6 +65,7 @@ jobs:
             });
 
       - name: Comment on PR
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: peter-evans/create-or-update-comment@v2
         with:
           issue-number: ${{ github.event.pull_request.number }}
