@@ -30,18 +30,25 @@ jobs:
       - run: npm install typescript ts-node
       - run: npx ts-node script/check-xps.ts ${{ steps.changed-files-specific.outputs.all_changed_files }}
         
-      - name: Delete old comment
-        uses: peter-evans/delete-comment@v1
+      - name: Find Comment
+        uses: peter-evans/find-comment@v2
+        id: fc
         with:
           issue-number: ${{ github.event.pull_request.number }}
-          comment-author: "github-actions[bot]"
-          delete-including-replies: true
-          delete-all-replies: true
-          delete-all-comments: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-      
+          body-includes: 🧪 Experiments Report
+          
+      - name: Delete comment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.issues.deleteComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: ${{ steps.fc.outputs.comment-id }},
+            })
+
       - name: Comment on PR
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v2
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
