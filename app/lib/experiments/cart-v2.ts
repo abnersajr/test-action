@@ -8,7 +8,7 @@ const experiment = {
   // Learn more about rotate preconditions: https://docs.busbud-int.com/pubweb/Experiments/#rotate-preconditions
   rotate_precondition: {
     product: { $eq: "test" },
-    user_country: { $in: ["FA", "BR"] }
+    user_country: { $in: ["FA", "BD"] }
   },
 
   distribution: {
