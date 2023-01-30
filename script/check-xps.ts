@@ -1,3 +1,4 @@
+const core = require("@actions/core");
 const path = require("path");
 const files_list = process.argv.slice(2);
 
@@ -95,6 +96,7 @@ const run = () => {
     "\n---------------\n"
   )}`;
 
+  core.setOutput("comment", comment);
   return comment;
 };
 

@@ -11,6 +11,10 @@ jobs:
   get_files:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0 
@@ -22,13 +26,12 @@ jobs:
           files: app/lib/experiments/*.ts
   
       - name: Check XPs
-        id: check-xpsid
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - run: npm install typescript ts-node
-      - run: npx ts-node script/check-xps.ts ${{ steps.changed-files-specific.outputs.all_changed_files }}
+        id: xps
+        run: |
+          echo "$steps.changed-files-specific.outputs"
+          npm install typescript ts-node @actions/core
+          npx ts-node script/check-xps.ts ${{ steps.changed-files-specific.outputs.all_changed_files }}
         
       - name: Find Comment
         uses: peter-evans/find-comment@v2
@@ -36,21 +39,21 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body-includes: 🧪 Experiments Report
-          
+      
       - name: Delete comment
+        if: steps.fc.outputs.comment-id != ''
         uses: actions/github-script@v6
         with:
           script: |
-            github.issues.deleteComment({
+            github.rest.issues.deleteComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               comment_id: ${{ steps.fc.outputs.comment-id }},
-            })
+            });
 
       - name: Comment on PR
         uses: peter-evans/create-or-update-comment@v2
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            ${{ steps.check-xpsid.outputs.stdout }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+            ${{ steps.xps.outputs.comment }}
