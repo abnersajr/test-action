@@ -54,6 +54,11 @@ const textTemplate = (keys: any, file: string) => {
   The XP id is: 🔑 **${keys.id}**
   The **rotate** value is now: ${rotate_emoji} \`${keys.rotate}\`
 
+  ### Rotate Preconditions
+  Group | Value
+  --- | ---
+  ${getRotatePreconditions(keys.rotate_precondition).join("\n")}
+
   ### Distribution Table
   Here is the percentage of the Distribution per group:
   Group name | Percentage
@@ -62,10 +67,13 @@ const textTemplate = (keys: any, file: string) => {
     .map(([group_name, percentage]) => `**${group_name}** | ${percentage}%`)
     .join("\n")}
   
-  ### Rotate Preconditions
-  Group | Value
-  --- | ---
-  ${getRotatePreconditions(keys.rotate_precondition).join("\n")}
+  \`\`\`mermaid
+  pie title Distribution Pie Chart Rounded values
+    %%{init: {'theme': 'base', 'themeVariables': {'primaryTextColor': '#30B0FF','pie1': '#E8B827', 'pie2': '#45CC7D', 'pie3': '#D14F08', 'pie4': '#E8375A', 'pie5': '#0F91F2', 'pie6': '##DCCE03', 'pie7': '#D14F08'}}}%%
+  ${percentages
+    .map(([group_name, percentage]) => `"${group_name}" : ${percentage}`)
+    .join("\n")}
+  \`\`\`
   `;
 };
 
