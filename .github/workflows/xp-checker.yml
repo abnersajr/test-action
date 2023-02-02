@@ -5,12 +5,16 @@ on:
     paths:
      - 'app/lib/experiments/**.ts'
     branches:
-    - master
+    - main
 
 jobs:
   get_files:
-    run-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0 
@@ -19,14 +23,39 @@ jobs:
         id: changed-files-specific
         uses: tj-actions/changed-files@v35
         with:
+          since_last_remote_commit: true
           files: app/lib/experiments/*.ts
-  
+
       - name: Check XPs
-        id: check-xpsid
+        id: xps        
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: actions/checkout@v3
-        uses: actions/setup-node@v3
+        run: |
+          npm install typescript ts-node @actions/core
+          npx ts-node script/check-xps.ts ${{ steps.changed-files-specific.outputs.all_changed_files }}
+        
+      - name: Find Comment
+        uses: peter-evans/find-comment@v2
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: fc
         with:
-          node-version: 18
-        run: npm install ts-node
-        run: ts-node script/check-xps.ts ${{ steps.changed-files-excluded.outputs.all_changed_files }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body-includes: 🧪 Experiments Report
+      
+      - name: Delete comment
+        if: steps.fc.outputs.comment-id != ''
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.deleteComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: ${{ steps.fc.outputs.comment-id }},
+            });
+
+      - name: Comment on PR
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ${{ steps.xps.outputs.comment }}

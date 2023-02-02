@@ -1,14 +1,14 @@
 const experiment = {
-  id: "iHUPdK1bRdSSmjjScnO5Q",
+  id: "qqqwwws",
   name: "test-xp",
 
   // Turn rotation to `true` when you want to activate the XP for users in prod.
-  rotate: false,
+  rotate: true,
 
   // Learn more about rotate preconditions: https://docs.busbud-int.com/pubweb/Experiments/#rotate-preconditions
   rotate_precondition: {
     product: { $eq: "test" },
-    user_country: { $eq: "FS" }
+    user_country: { $in: ["FA", "BD"] }
   },
 
   distribution: {

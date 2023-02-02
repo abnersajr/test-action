@@ -1,0 +1,20 @@
+{
+  "name": "test-action",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx ts-node-dev --respawn script/check-xps.ts app/lib/experiments/cart-v2.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abnersajr/test-action.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abnersajr/test-action/issues"
+  },
+  "homepage": "https://github.com/abnersajr/test-action#readme"
+}
