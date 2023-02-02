@@ -13,7 +13,7 @@ const experiment = {
 
   distribution: {
     "0": "control_1", // 49.5%
-    "495": "control_2", // 49.5%
+    "492": "control_2", // 49.5%
     "980": "1" // 1%
   },
 

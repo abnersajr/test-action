@@ -59,7 +59,7 @@ const textTemplate = (keys: any, file: string) => {
   Group name | Percentage
   --- | ---
   ${percentages
-    .map(([group_name, percentage]) => `${group_name} | ${percentage}%`)
+    .map(([group_name, percentage]) => `**${group_name}** | ${percentage}%`)
     .join("\n")}
   
   ### Rotate Preconditions
