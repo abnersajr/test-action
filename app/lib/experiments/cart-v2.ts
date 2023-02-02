@@ -8,13 +8,13 @@ const experiment = {
   // Learn more about rotate preconditions: https://docs.busbud-int.com/pubweb/Experiments/#rotate-preconditions
   rotate_precondition: {
     product: { $eq: "test" },
-    user_country: { $in: ["FA", "BD"] }
+    user_country: { $in: ["FD", "BD"] }
   },
 
   distribution: {
     "0": "control_1", // 49.5%
     "495": "control_2", // 49.5%
-    "990": "1" // 1%
+    "980": "1" // 1%
   },
 
   // `control` group catches people rejected by XP preconditions.
