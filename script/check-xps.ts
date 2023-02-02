@@ -14,8 +14,8 @@ type RulesDictionaryValues = keyof typeof RulesDictionary;
 const RulesDictionary = {
   $eq: "is equal to",
   $neq: "is not equal to",
-  $in: "is one of the following",
-  $nin: "is not one of the following",
+  $in: "is one of the following:",
+  $nin: "is not one of the following:",
 } as const;
 
 const getRotatePreconditions = (
@@ -29,7 +29,7 @@ const getRotatePreconditions = (
           : conditionValue;
         return `${
           RulesDictionary[conditionKey as RulesDictionaryValues]
-        } *${value}*`;
+        } ***${value}***`;
       }
     );
     return `**${key}** | ${condition.join(" ")}`;
