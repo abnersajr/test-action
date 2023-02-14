@@ -14,8 +14,8 @@ type RulesDictionaryValues = keyof typeof RulesDictionary;
 const RulesDictionary = {
   $eq: "is equal to",
   $neq: "is not equal to",
-  $in: "is one of the following",
-  $nin: "is not one of the following",
+  $in: "is one of the following:",
+  $nin: "is not one of the following:",
 } as const;
 
 const getRotatePreconditions = (
@@ -29,7 +29,7 @@ const getRotatePreconditions = (
           : conditionValue;
         return `${
           RulesDictionary[conditionKey as RulesDictionaryValues]
-        } *${value}*`;
+        } ***${value}***`;
       }
     );
     return `**${key}** | ${condition.join(" ")}`;
@@ -54,18 +54,26 @@ const textTemplate = (keys: any, file: string) => {
   The XP id is: 🔑 **${keys.id}**
   The **rotate** value is now: ${rotate_emoji} \`${keys.rotate}\`
 
+  ### Rotate Preconditions
+  Group | Value
+  --- | ---
+  ${getRotatePreconditions(keys.rotate_precondition).join("\n")}
+
   ### Distribution Table
   Here is the percentage of the Distribution per group:
   Group name | Percentage
   --- | ---
   ${percentages
-    .map(([group_name, percentage]) => `${group_name} | ${percentage}%`)
+    .map(([group_name, percentage]) => `**${group_name}** | ${percentage}%`)
     .join("\n")}
   
-  ### Rotate Preconditions
-  Group | Value
-  --- | ---
-  ${getRotatePreconditions(keys.rotate_precondition).join("\n")}
+  \`\`\`mermaid
+  pie title Distribution Pie Chart Rounded values
+    %%{init: {'theme': 'base', 'themeVariables': { 'primaryTextColor': '#0F60B6','pie1': '#E8E8E8', 'pie2': '#F0EFC1', 'pie3': '#D6F0D6', 'pie4': '#FFEBE5'}}}%%
+  ${percentages
+    .map(([group_name, percentage]) => `"${group_name}" : ${percentage}`)
+    .join("\n")}
+  \`\`\`
   `;
 };
 
