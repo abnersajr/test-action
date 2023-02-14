@@ -69,7 +69,7 @@ const textTemplate = (keys: any, file: string) => {
   
   \`\`\`mermaid
   pie title Distribution Pie Chart Rounded values
-    %%{init: {'theme': 'base', 'themeVariables': {'primaryTextColor': '#30B0FF','pie1': '#E8B827', 'pie2': '#45CC7D', 'pie3': '#D14F08', 'pie4': '#E8375A', 'pie5': '#0F91F2', 'pie6': '##DCCE03', 'pie7': '#D14F08'}}}%%
+    %%{init: {'theme': 'base', 'themeVariables': {'primaryTextColor': '#0F60B6','pie1': '#FFFFFF', 'pie2': '#DDDDDD', 'pie3': '#CCCCCC', 'pie4': '#F2F2F2'}}}%%
   ${percentages
     .map(([group_name, percentage]) => `"${group_name}" : ${percentage}`)
     .join("\n")}
